@@ -5,22 +5,55 @@ import argparse
 
 # CONFIG
 # define mapping of file extensions to folder names
-#   ".pdf" > "Documents"
-#   ".png" > "Images"
-# define default target directory (optional)
-
 EXTENSION_MAP = {
-    # ".pdf": "Documents",
-    # ".png": "Images",
-    # ".jpg": "Images",
-    # ".mp3": "Audio",
+    # Documents
+    ".pdf": "Documents",
+    ".doc": "Documents",
+    ".docx": "Documents",
+    ".txt": "Documents",
+
+    # Images
+    ".png": "Images",
+    ".jpg": "Images",
+    ".jpeg": "Images",
+    ".gif": "Images",
+
+    # Audio
+    ".mp3": "Audio",
+    ".wav": "Audio",
+
+    # Video
+    ".mp4": "Video",
+    ".mov": "Video",
+
+    # Archives
+    ".zip": "Archives",
+    ".rar": "Archives",
+
+    # Code
+    ".py": "Code",
+    ".cpp": "Code",
+    ".h": "Code",
 }
+
+DEFAULT_FOLDER = "Other"
+DEFAULT_TARGET_DIRECTORY = os.getcwd()
 
 # HELPER FUNCTIONS
 # function: get_files_in_directory(path)
 #   return list of files (exclude folders)
 def get_files_in_directory(path):
-    return []
+    files = []
+
+    # iterate through all entries in the directory
+    for entry in os.listdir(path):
+        full_path = os.path.join(path, entry)
+
+        # check if entry is a file (not a directory)
+        if os.path.isfile(full_path):
+            files.append(full_path)
+
+    return files
 
 # function: get_file_extension(filename)
 #   extract and return extension (lowercase)
