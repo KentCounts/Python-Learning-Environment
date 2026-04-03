@@ -58,13 +58,14 @@ def get_files_in_directory(path):
 # function: get_file_extension(filename)
 #   extract and return extension (lowercase)
 def get_file_extension(filename):
-    return ""
+    _, ext = os.path.splitext(filename)
+    return ext.lower()
 
 # function: get_destination_folder(extension)
 #   return folder name based on mapping
 #   if extension not found → return "Other"
 def get_destination_folder(extension):
-    return ""
+    return EXTENSION_MAP.get(extension, DEFAULT_FOLDER)
 
 # function: create_folder_if_not_exists(base_path, folder_name)
 #   check if folder exists
