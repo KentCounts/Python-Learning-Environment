@@ -71,14 +71,22 @@ def get_destination_folder(extension):
 #   check if folder exists
 #   if not → create it
 def create_folder_if_not_exists(base_path, folder_name):
-    pass
+    folder_path = os.path.join(base_path, folder_name)
+
+    if not os.path.exists(folder_path):
+        os.makedirs(folder_path)
+
+    return folder_path
 
 # CORE FUNCTIONALITY
 # function: move_file(file_path, destination_folder)
 #   construct destination path
 #   move file using shutil
 def move_file(file_path, destination_folder):
-    pass
+    filename = os.path.basename(file_path)
+    destination_path = os.path.join(destination_folder, filename)
+
+    shutil.move(file_path, destination_path)
 
 # function: organize_directory(target_path)
 #   get all files in directory
@@ -88,7 +96,22 @@ def move_file(file_path, destination_folder):
 #       ensure folder exists
 #       move file
 def organize_directory(target_path):
-    pass
+    files = get_files_in_directory(target_path)
+
+    for file_path in files:
+        filename = os.path.basename(file_path)
+
+        # get extension
+        extension = get_file_extension(filename)
+
+        # find destination folder
+        folder_name = get_destination_folder(extension)
+
+        # check folder exists
+        destination_folder = create_folder_if_not_exists(target_path, folder_name)
+
+        # move file
+        move_file(file_path, destination_folder)
 
 
 # ENTRY POINT
