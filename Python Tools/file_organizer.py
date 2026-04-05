@@ -120,13 +120,40 @@ def organize_directory(target_path):
 #   example:
 #       path to organize
 def parse_arguments():
-    return None
+    parser = argparse.ArgumentParser(
+        description="Organize files in a directory by type."
+    )
 
+    parser.add_argument(
+        "path",
+        nargs="?",  # optional argument
+        default=DEFAULT_TARGET_DIRECTORY,
+        help="Path to directory to organize (default: current directory)"
+    )
+
+    return parser.parse_args()
 # main():
 #   parse arguments
 #   validate path
 def main():
-    pass
+    args = parse_arguments()
+
+    target_path = args.path
+
+    # validate path
+    if not os.path.exists(target_path):
+        print(f"Error: Path does not exist: {target_path}")
+        return
+
+    if not os.path.isdir(target_path):
+        print(f"Error: Path is not a directory: {target_path}")
+        return
+
+    print(f"Organizing directory: {target_path}")
+
+    organize_directory(target_path)
+
+    print("Done.")
 
 if __name__ == "__main__":
     main()

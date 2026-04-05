@@ -4,15 +4,15 @@ import argparse
 import file_organizer
 
 def main():
-    print("Running main...")
+    print("Select a tool:")
+    print("1. File Organizer")
 
-    test_path = os.path.dirname(os.path.abspath(__file__))
-    print("Path:", test_path)
+    choice = input("Enter choice: ")
 
-    files = file_organizer.get_files_in_directory(test_path)
-
-    for f in files:
-        print(f)
+    if choice == "1":
+        file_organizer.main()
+    elif choice == "2":
+        return
 
 
 if __name__ == "__main__":
