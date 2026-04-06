@@ -132,14 +132,9 @@ def parse_arguments():
     )
 
     return parser.parse_args()
-# main():
-#   parse arguments
-#   validate path
-def main():
-    args = parse_arguments()
 
-    target_path = args.path
-
+# run with manual input and not argparsing
+def run(target_path):
     # validate path
     if not os.path.exists(target_path):
         print(f"Error: Path does not exist: {target_path}")
@@ -154,6 +149,26 @@ def main():
     organize_directory(target_path)
 
     print("Done.")
+
+# menu choices and interactive mode. 
+def run_interactive():
+    print("File Organizer")
+
+    path = input("Enter directory to organize (leave blank for current): ").strip()
+
+    if not path:
+        path = os.getcwd()
+
+    path = os.path.normpath(path)
+
+    run(path)
+
+# main():
+#   parse arguments
+#   validate path
+def main():
+    args = parse_arguments()
+    run(args.path)
 
 if __name__ == "__main__":
     main()

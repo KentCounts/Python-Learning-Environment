@@ -4,15 +4,18 @@ import argparse
 import file_organizer
 
 def main():
-    print("Select a tool:")
+    print("Automation Tools")
     print("1. File Organizer")
+    print("2. Exit")
 
-    choice = input("Enter choice: ")
+    choice = input("Select an option: ").strip()
 
     if choice == "1":
-        file_organizer.main()
+        file_organizer.run_interactive()
     elif choice == "2":
-        return
+        print("Exiting.")
+    else:
+        print("Invalid choice.")
 
 
 if __name__ == "__main__":
