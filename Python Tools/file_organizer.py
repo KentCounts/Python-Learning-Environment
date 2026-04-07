@@ -38,8 +38,8 @@ EXTENSION_MAP = {
 
 DEFAULT_FOLDER = "Other"
 DEFAULT_TARGET_DIRECTORY = os.getcwd()
+LOG_FILE = "organizer_log.txt"
 
-# HELPER FUNCTIONS
 # function: get_files_in_directory(path)
 #   return list of files (exclude folders)
 def get_files_in_directory(path):
@@ -78,7 +78,10 @@ def create_folder_if_not_exists(base_path, folder_name):
 
     return folder_path
 
-# CORE FUNCTIONALITY
+def log_action(message):
+    with open(LOG_FILE, "a") as log_file:
+        log_file.write(message + "\n")
+
 # function: move_file(file_path, destination_folder)
 #   construct destination path
 #   move file using shutil
@@ -87,6 +90,10 @@ def move_file(file_path, destination_folder):
     destination_path = os.path.join(destination_folder, filename)
 
     shutil.move(file_path, destination_path)
+
+    log_message = f"Moved: {file_path} → {destination_path}"
+    print(log_message)
+    log_action(log_message)
 
 # function: organize_directory(target_path)
 #   get all files in directory
@@ -114,7 +121,6 @@ def organize_directory(target_path):
         move_file(file_path, destination_folder)
 
 
-# ENTRY POINT
 # function: parse_arguments()
 #   define command line arguments
 #   example:
