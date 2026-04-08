@@ -21,6 +21,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="batch_renamer.py" />
     <Compile Include="file_organizer.py" />
     <Compile Include="main.py" />
   </ItemGroup>
