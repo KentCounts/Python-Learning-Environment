@@ -1,11 +1,20 @@
 # IMPORTS
-# os for file operations
-# argparse for CLI support
-
+import os
+import argparse
 
 # CONFIG
-# default directory
-# default naming pattern
+DEFAULT_TARGET_DIRECTORY = os.getcwd()
+DEFAULT_PATTERN = "file_{index}"
+PRESERVE_EXTENSION = True
+START_INDEX = 1
+LOG_FILE = "renamer_log.txt"
+
+# NOTE:
+# pattern must include "{index}" or filenames will collide
+# example valid patterns:
+#   "file_{index}"
+#   "image_{index}"
+#   "renamed_{index}"
 
 # get_files_in_directory(path)
 #   return list of files (exclude folders)
