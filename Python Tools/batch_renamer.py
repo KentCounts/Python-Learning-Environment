@@ -16,13 +16,28 @@ LOG_FILE = "renamer_log.txt"
 #   "image_{index}"
 #   "renamed_{index}"
 
-# get_files_in_directory(path)
-#   return list of files (exclude folders)
+def get_files_in_directory(path):
+    files = []
+
+    for entry in os.listdir(path):
+        full_path = os.path.join(path, entry)
+
+        if os.path.isfile(full_path):
+            files.append(full_path)
+
+    return files
 
 
-# generate_new_name(filename, index, pattern)
-#   generate new filename based on pattern
-#   preserve extension
+def generate_new_name(filename, index, pattern):
+    name, ext = os.path.splitext(filename)
+
+    # build name using pattern
+    new_name = pattern.format(index=index)
+
+    if PRESERVE_EXTENSION:
+        new_name += ext
+
+    return new_name
 
 
 # resolve_name_conflict(directory, new_name)
