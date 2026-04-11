@@ -39,11 +39,17 @@ def generate_new_name(filename, index, pattern):
 
     return new_name
 
+def resolve_name_conflict(directory, new_name):
+    base_name, ext = os.path.splitext(new_name)
+    candidate = new_name
+    counter = 1
 
-# resolve_name_conflict(directory, new_name)
-#   if file already exists:
-#       append counter (e.g., file_1 (1).png)
-#   return safe filename
+    # loop until find name that does not exist
+    while os.path.exists(os.path.join(directory, candidate)):
+        candidate = f"{base_name} ({counter}){ext}"
+        counter += 1
+
+    return candidate
 
 # rename_file(old_path, new_path)
 #   rename file using os.rename or shutil.move
