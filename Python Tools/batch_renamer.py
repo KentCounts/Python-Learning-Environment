@@ -51,9 +51,16 @@ def resolve_name_conflict(directory, new_name):
 
     return candidate
 
-# rename_file(old_path, new_path)
-#   rename file using os.rename or shutil.move
-#   log rename action
+def rename_file(old_path, directory, new_name):
+    new_path = os.path.join(directory, new_name)
+
+    # perform rename
+    os.rename(old_path, new_path)
+
+    # log + print
+    log_message = f"Renamed: {os.path.basename(old_path)} → {new_name}"
+    print(log_message)
+    log_action(log_message)
 
 
 # batch_rename(target_path, pattern)
