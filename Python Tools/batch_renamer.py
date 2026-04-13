@@ -72,8 +72,9 @@ def rename_file(old_path, directory, new_name):
 #       rename file
 #       increment index
 
-# function: log_action(message)
-#   append rename actions to log file
+def log_action(message):
+    with open(LOG_FILE, "a") as log_file:
+        log_file.write(message + "\n")
 
 
 # parse_arguments()
