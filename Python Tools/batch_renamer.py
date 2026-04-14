@@ -62,15 +62,25 @@ def rename_file(old_path, directory, new_name):
     print(log_message)
     log_action(log_message)
 
+def batch_rename(target_path, pattern):
+    files = get_files_in_directory(target_path)
 
-# batch_rename(target_path, pattern)
-#   get all files in directory
-#   initialize index counter
-#   loop through files:
-#       generate new name
-#       resolve conflicts
-#       rename file
-#       increment index
+    index = START_INDEX
+
+    for file_path in files:
+        filename = os.path.basename(file_path)
+
+        # generate new name
+        new_name = generate_new_name(filename, index, pattern)
+
+        # resolve conflicts
+        safe_name = resolve_name_conflict(target_path, new_name)
+
+        # rename file
+        rename_file(file_path, target_path, safe_name)
+
+        # increment index
+        index += 1
 
 def log_action(message):
     with open(LOG_FILE, "a") as log_file:
