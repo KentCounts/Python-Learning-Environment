@@ -9,13 +9,6 @@ PRESERVE_EXTENSION = True
 START_INDEX = 1
 LOG_FILE = "renamer_log.txt"
 
-# NOTE:
-# pattern must include "{index}" or filenames will collide
-# example valid patterns:
-#   "file_{index}"
-#   "image_{index}"
-#   "renamed_{index}"
-
 def get_files_in_directory(path):
     files = []
 
@@ -87,31 +80,68 @@ def log_action(message):
         log_file.write(message + "\n")
 
 
-# parse_arguments()
-#   define command line arguments:
-#       path (optional)
-#       naming pattern (optional)
+def parse_arguments():
+    parser = argparse.ArgumentParser(
+        description="Batch rename files in a directory."
+    )
+
+    parser.add_argument(
+        "path",
+        nargs="?",
+        default=DEFAULT_TARGET_DIRECTORY,
+        help="Path to directory (default: current directory)"
+    )
+
+    parser.add_argument(
+        "--pattern",
+        default=DEFAULT_PATTERN,
+        help=f"Rename pattern (default: {DEFAULT_PATTERN})"
+    )
+
+    return parser.parse_args()
 
 
-# run(target_path, pattern)
-#   validate path
-#   call batch_rename
+def run(target_path, pattern):
+    # validate path
+    if not os.path.exists(target_path):
+        print(f"Error: Path does not exist: {target_path}")
+        return
+
+    if not os.path.isdir(target_path):
+        print(f"Error: Path is not a directory: {target_path}")
+        return
+
+    print(f"Renaming files in: {target_path}")
+    print(f"Using pattern: {pattern}")
+
+    batch_rename(target_path, pattern)
+
+    print("Done.")
 
 
-# function: run_interactive()
-#   prompt user for:
-#       directory path
-#       naming pattern
-#   apply defaults if blank
-#   call run()
+def run_interactive():
+    print("Batch Renamer")
+
+    path = input("Enter directory (leave blank for current): ").strip()
+    pattern = input(f"Enter naming pattern (default: {DEFAULT_PATTERN}): ").strip()
+
+    if not path:
+        path = os.getcwd()
+
+    if not pattern:
+        pattern = DEFAULT_PATTERN
+
+    path = os.path.normpath(path)
+
+    run(path, pattern)
 
 
-# function: main()
-#   parse arguments
-#   call run()
+def main():
+    args = parse_arguments()
+    run(args.path, args.pattern)
 
-# if __name__ == "__main__":
-#   main()
+if __name__ == "__main__":
+    main()
 
 # FUTURE IMPROVEMENT IDEAS=
 # support prefix/suffix modes
