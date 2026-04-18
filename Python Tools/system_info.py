@@ -1,25 +1,25 @@
-# IMPORTS
-# os for system interaction
-# platform for OS/system details
-# argparse for CLI
-# optional:
-#   psutil for advanced system metrics (CPU, memory, disk)
-
-# default output mode (print to console)
-# optional log file name
-# optional refresh interval (for future live monitoring)
-
-# function: get_os_info()
-#   return operating system name and version
-#   example:
-#       Windows 10, Linux, etc.
+import os
+import platform
+import argparse
+import psutil
 
 
-# function: get_cpu_info()
-#   return CPU details:
-#       number of cores
-#       processor name
-#       usage percentage (if psutil used)
+def get_os_info():
+    return {
+        "system": platform.system(),
+        "node": platform.node(),
+        "release": platform.release(),
+        "version": platform.version(),
+        "machine": platform.machine(),
+        "processor": platform.processor(),
+    }
+
+def get_cpu_info():
+    return {
+        "physical_cores": psutil.cpu_count(logical=False),
+        "logical_cores": psutil.cpu_count(logical=True),
+        "cpu_usage_percent": psutil.cpu_percent(interval=1),
+    }
 
 
 # function: get_memory_info()
