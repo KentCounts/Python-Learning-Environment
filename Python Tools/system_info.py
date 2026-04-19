@@ -21,19 +21,25 @@ def get_cpu_info():
         "cpu_usage_percent": psutil.cpu_percent(interval=1),
     }
 
+def get_memory_info():
+    mem = psutil.virtual_memory()
 
-# function: get_memory_info()
-#   return memory usage:
-#       total RAM
-#       used RAM
-#       available RAM
+    return {
+        "total": mem.total,
+        "available": mem.available,
+        "used": mem.used,
+        "percent_used": mem.percent,
+    }
 
+def get_disk_info():
+    disk = psutil.disk_usage('/')
 
-# function: get_disk_info()
-#   return disk usage:
-#       total space
-#       used space
-#       free space
+    return {
+        "total": disk.total,
+        "used": disk.used,
+        "free": disk.free,
+        "percent_used": disk.percent,
+    }
 
 
 # function: get_environment_info()
