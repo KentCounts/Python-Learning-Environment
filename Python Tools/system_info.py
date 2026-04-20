@@ -41,11 +41,12 @@ def get_disk_info():
         "percent_used": disk.percent,
     }
 
-
-# function: get_environment_info()
-#   return basic environment data:
-#       current working directory
-#       username (optional)
+def get_environment_info():
+    return {
+        "current_working_directory": os.getcwd(),
+        "user": os.getenv("USERNAME") or os.getenv("USER"),
+        "home_directory": os.path.expanduser("~"),
+    }
 
 # function: format_size(bytes)
 #   convert bytes → KB/MB/GB for readability
