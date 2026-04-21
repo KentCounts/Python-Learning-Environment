@@ -48,20 +48,74 @@ def get_environment_info():
         "home_directory": os.path.expanduser("~"),
     }
 
-# function: format_size(bytes)
-#   convert bytes → KB/MB/GB for readability
+def format_size(bytes_value):
+    for unit in ["B", "KB", "MB", "GB", "TB"]:
+        if bytes_value < 1024:
+            return f"{bytes_value:.2f} {unit}"
+        bytes_value /= 1024
 
+    return f"{bytes_value:.2f} PB"
 
-# function: display_system_info(info_dict)
-#   format and print all collected info in readable way
+def log_info(info):
+    with open(LOG_FILE, "a") as log_file:
+        log_file.write("=== System Info Log ===\n")
 
-# function: log_info(info_dict)
-#   write system info to log file
+        for section, data in info.items():
+            log_file.write(f"\n[{section.upper()}]\n")
 
-# function: collect_system_info()
-#   call all helper functions
-#   store results in dictionary
-#   return dictionary
+            for key, value in data.items():
+                log_file.write(f"{key}: {value}\n")
+
+        log_file.write("\n")
+
+def collect_system_info():
+    info = {
+        "os": get_os_info(),
+        "cpu": get_cpu_info(),
+        "memory": get_memory_info(),
+        "disk": get_disk_info(),
+        "environment": get_environment_info(),
+    }
+
+    return info
+
+def display_system_info(info):
+    print("\n=== System Information ===\n")
+    # OS
+    print("Operating System:")
+    for key, value in info["os"].items():
+        print(f"  {key}: {value}")
+    print()
+
+    # CPU
+    print("CPU:")
+    for key, value in info["cpu"].items():
+        print(f"  {key}: {value}")
+    print()
+
+    # Memory
+    print("Memory:")
+    mem = info["memory"]
+    print(f"  total: {format_size(mem['total'])}")
+    print(f"  used: {format_size(mem['used'])}")
+    print(f"  available: {format_size(mem['available'])}")
+    print(f"  percent_used: {mem['percent_used']}%")
+    print()
+
+    # Disk
+    print("Disk:")
+    disk = info["disk"]
+    print(f"  total: {format_size(disk['total'])}")
+    print(f"  used: {format_size(disk['used'])}")
+    print(f"  free: {format_size(disk['free'])}")
+    print(f"  percent_used: {disk['percent_used']}%")
+    print()
+
+    # Environment
+    print("Environment:")
+    for key, value in info["environment"].items():
+        print(f"  {key}: {value}")
+    print()
 
 # function: run()
 #   collect system info
