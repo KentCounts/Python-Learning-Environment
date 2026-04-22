@@ -117,27 +117,43 @@ def display_system_info(info):
         print(f"  {key}: {value}")
     print()
 
-# function: run()
-#   collect system info
-#   display results
-#   optionally log results
+def run(log=False):
+    info = collect_system_info()
 
-# function: parse_arguments()
-#   optional flags:
-#       --log (write to file)
-#       --verbose (extra details)
+    display_system_info(info)
 
-# function: run_interactive()
-#   menu-driven:
-#       show system info
-#       optionally log
+    if log:
+        log_info(info)
+        print("System information logged.")
 
-# function: main()
-#   parse arguments
-#   call run()
+def parse_arguments():
+    parser = argparse.ArgumentParser(
+        description="Display system information."
+    )
 
-# if __name__ == "__main__":
-#   main()
+    parser.add_argument(
+        "--log",
+        action="store_true",
+        help="Log system information to file"
+    )
+
+    return parser.parse_args()
+
+def run_interactive():
+    print("System Information Tool")
+
+    choice = input("Log output to file? (y/n): ").strip().lower()
+
+    log = choice == "y"
+
+    run(log)
+
+def main():
+    args = parse_arguments()
+    run(log=args.log)
+
+if __name__ == "__main__":
+    main()
 
 
 # FUTURE IMPROVEMENTS
