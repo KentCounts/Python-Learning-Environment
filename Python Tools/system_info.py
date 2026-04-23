@@ -2,7 +2,9 @@ import os
 import platform
 import argparse
 import psutil
+import datetime
 
+LOG_FILE = "system_info_log.txt"
 
 def get_os_info():
     return {
@@ -32,7 +34,7 @@ def get_memory_info():
     }
 
 def get_disk_info():
-    disk = psutil.disk_usage('/')
+    disk = psutil.disk_usage(os.path.abspath(os.sep))
 
     return {
         "total": disk.total,
@@ -58,15 +60,16 @@ def format_size(bytes_value):
 
 def log_info(info):
     with open(LOG_FILE, "a") as log_file:
-        log_file.write("=== System Info Log ===\n")
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        log_file.write(f"\n=== System Info ({timestamp}) ===\n")
 
         for section, data in info.items():
             log_file.write(f"\n[{section.upper()}]\n")
 
-            for key, value in data.items():
-                log_file.write(f"{key}: {value}\n")
-
-        log_file.write("\n")
+        for key, value in data.items():
+            if key in ["total", "used", "available", "free"]:
+                value = format_size(value)
+            log_file.write(f"{key}: {value}\n")
 
 def collect_system_info():
     info = {

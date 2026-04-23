@@ -3,13 +3,15 @@ import shutil
 import argparse
 import file_organizer
 import batch_renamer
+import system_info
 
 def main():
     while True:
         print("\nAutomation Tools")
         print("1. File Organizer")
         print("2. Batch Renamer")
-        print("3. Exit")
+        print("3. System Info")
+        print("4. Exit")
 
         choice = input("Select an option: ").strip()
 
@@ -20,6 +22,9 @@ def main():
             batch_renamer.run_interactive()
 
         elif choice == "3":
+            system_info.run_interactive()
+
+        elif choice == "4":
             print("Exiting.")
             break
 
