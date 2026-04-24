@@ -23,6 +23,7 @@
   <ItemGroup>
     <Compile Include="batch_renamer.py" />
     <Compile Include="file_organizer.py" />
+    <Compile Include="log_parser.py" />
     <Compile Include="main.py" />
     <Compile Include="system_info.py" />
   </ItemGroup>
