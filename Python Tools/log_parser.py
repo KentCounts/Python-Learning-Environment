@@ -1,19 +1,28 @@
-# Imports
-# os
-# argparse
-# re (regex) for pattern matching
+import os
+import argparse
+import re
 
-# default log file path 
-# default output file name
-# error keywords list:
-#   ["ERROR", "WARNING", "CRITICAL"]
+# default log file
+DEFAULT_LOG_FILE = "application.log"
 
-# case sensitivity setting
+# default output file
+DEFAULT_OUTPUT_FILE = "parsed_errors.txt"
 
+# keywords for errors
+ERROR_KEYWORDS = ["ERROR", "WARNING", "CRITICAL"]
 
-# function: read_log_file(file_path)
-#   open file
-#   return list of lines
+# case sensitivity
+CASE_SENSITIVE = False
+
+def read_log_file(file_path):
+    if not os.path.exists(file_path):
+        raise FileNotFoundError(f"Log file not found: {file_path}")
+
+    if not os.path.isfile(file_path):
+        raise ValueError(f"Path is not a file: {file_path}")
+
+    with open(file_path, "r", encoding="utf-8") as file:
+        return file.readlines()
 
 
 # function: is_error_line(line, keywords)
