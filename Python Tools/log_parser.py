@@ -25,22 +25,39 @@ def read_log_file(file_path):
         return file.readlines()
 
 
-# function: is_error_line(line, keywords)
-#   check if line contains any error keyword
-#   return True/False
+def is_error_line(line, keywords):
+    if not CASE_SENSITIVE:
+        line = line.lower()
+        keywords = [k.lower() for k in keywords]
+
+    return any(keyword in line for keyword in keywords)
 
 
-# function: extract_error_info(line)
-#   parse useful parts of the log line
-#   example:
-#       timestamp
-#       log level (ERROR, WARNING)
-#       message
-#   return structured data (dict or tuple)
+def extract_error_info(line):
+    line = line.strip()
+
+    # regex for: timestamp + level + message
+    pattern = r"^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})\s+(\w+)\s+(.*)$"
+    match = re.match(pattern, line)
+
+    if match:
+        timestamp, level, message = match.groups()
+        return {
+            "timestamp": timestamp,
+            "level": level,
+            "message": message
+        }
+
+    # fallback if line doesn't match format
+    return {
+        "timestamp": "N/A",
+        "level": "UNKNOWN",
+        "message": line
+    }
 
 
-# function: format_error_output(error_data)
-#   convert structured data into readable string
+def format_error_output(error_data):
+    return f"[{error_data['level']}] {error_data['timestamp']} - {error_data['message']}"
 
 # function: parse_log(file_path, keywords)
 #   read all lines
