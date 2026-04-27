@@ -59,24 +59,42 @@ def extract_error_info(line):
 def format_error_output(error_data):
     return f"[{error_data['level']}] {error_data['timestamp']} - {error_data['message']}"
 
-# function: parse_log(file_path, keywords)
-#   read all lines
-#   loop through lines:
-#       if is_error_line:
-#           extract info
-#           store results
-#   return list of errors
+def parse_log(file_path, keywords):
+    lines = read_log_file(file_path)
+    errors = []
+
+    for line in lines:
+        if is_error_line(line, keywords):
+            error_data = extract_error_info(line)
+            errors.append(error_data)
+
+    return errors
 
 
-# function: display_errors(errors)
-#   print errors to console in readable format
+def display_errors(errors):
+    if not errors:
+        print("No errors found.")
+        return
+
+    print("\n=== Parsed Errors ===\n")
+
+    for error in errors:
+        print(format_error_output(error))
 
 
-# function: save_errors(errors, output_file)
-#   write parsed errors to file
+def save_errors(errors, output_file):
+    with open(output_file, "w", encoding="utf-8") as file:
+        for error in errors:
+            file.write(format_error_output(error) + "\n")
 
-# function: log_summary(count)
-#   log number of errors found
+    print(f"Errors saved to: {output_file}")
+
+
+def log_summary(count):
+    log_file = "log_parser_summary.txt"
+
+    with open(log_file, "a") as file:
+        file.write(f"Errors found: {count}\n")
 
 
 # function: parse_arguments()
