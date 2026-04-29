@@ -4,6 +4,7 @@ import argparse
 import file_organizer
 import batch_renamer
 import system_info
+import log_parser
 
 def main():
     while True:
@@ -11,7 +12,8 @@ def main():
         print("1. File Organizer")
         print("2. Batch Renamer")
         print("3. System Info")
-        print("4. Exit")
+        print("4. Log Parser")
+        print("")
 
         choice = input("Select an option: ").strip()
 
@@ -25,6 +27,9 @@ def main():
             system_info.run_interactive()
 
         elif choice == "4":
+             log_parser.run_interactive()
+
+        elif choice == "5":
             print("Exiting.")
             break
 
