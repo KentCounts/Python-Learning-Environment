@@ -1,13 +1,19 @@
+import subprocess
+import platform
+import time
+import argparse
 
-# subprocess for running system ping command
-# platform to detect OS (Windows vs Linux/Mac)
-# time for delays between pings
-# argparse for CLI
+# default host to monitor
+DEFAULT_HOST = "8.8.8.8"
 
-# default target host (e.g., "8.8.8.8" or "google.com")
-# default ping interval (seconds)
-# default number of pings (optional, or infinite)
-# timeout settings (optional)
+# default delay
+DEFAULT_INTERVAL = 2
+
+# default number of checks
+DEFAULT_COUNT = None
+
+# log file (if logging enabled)
+LOG_FILE = "network_monitor_log.txt"
 
 # function: get_ping_command(host)
 #   return correct ping command depending on OS
