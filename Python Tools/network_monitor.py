@@ -15,10 +15,6 @@ DEFAULT_COUNT = None
 # log file (if logging enabled)
 LOG_FILE = "network_monitor_log.txt"
 
-# =========================
-# HELPER FUNCTIONS
-# =========================
-
 def get_ping_command(host):
     system = platform.system()
 
@@ -43,32 +39,55 @@ def ping_host(host):
     except Exception:
         return False
 
+from datetime import datetime
 
-# function: format_status(success)
-#   return formatted string:
-#       "UP" or "DOWN"
 
-# function: log_status(host, status)
-#   append timestamped status to log file
-#   example:
-#       [2026-04-30 12:00:00] google.com - UP
+def format_status(success):
+    return "UP" if success else "DOWN"
 
-# function: monitor_host(host, interval, count=None)
-#   initialize counters:
-#       success_count
-#       failure_count
-#
-#   loop:
-#       ping host
-#       determine status (UP/DOWN)
-#       print result
-#       log result (optional)
-#       update counters
-#
-#       if count is set:
-#           stop after count iterations
-#
-#       sleep(interval)
+
+def log_status(host, status):
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    with open(LOG_FILE, "a") as file:
+        file.write(f"[{timestamp}] {host} - {status}\n")
+
+
+def monitor_host(host, interval, count=None, log=False):
+    success_count = 0
+    failure_count = 0
+    iteration = 0
+
+    print(f"\nMonitoring: {host}\n")
+
+    while True:
+        iteration += 1
+
+        # ping
+        success = ping_host(host)
+        status = format_status(success)
+
+        # print result
+        print(f"[{iteration}] {status}")
+
+        # log
+        if log:
+            log_status(host, status)
+
+        # update counters
+        if success:
+            success_count += 1
+        else:
+            failure_count += 1
+
+        # stop if count reached
+        if count is not None and iteration >= count:
+            break
+
+        # wait before next ping
+        time.sleep(interval)
+
+    return success_count, failure_count
 
 
 # function: display_summary(success_count, failure_count)
