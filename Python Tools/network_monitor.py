@@ -15,19 +15,33 @@ DEFAULT_COUNT = None
 # log file (if logging enabled)
 LOG_FILE = "network_monitor_log.txt"
 
-# function: get_ping_command(host)
-#   return correct ping command depending on OS
-#   Windows:
-#       ping -n 1 host
-#   Linux/Mac:
-#       ping -c 1 host
+# =========================
+# HELPER FUNCTIONS
+# =========================
+
+def get_ping_command(host):
+    system = platform.system()
+
+    if system == "Windows":
+        return ["ping", "-n", "1", host]
+    else:
+        return ["ping", "-c", "1", host]
 
 
-# function: ping_host(host)
-#   execute ping command using subprocess
-#   return:
-#       True if successful
-#       False if failed
+def ping_host(host):
+    command = get_ping_command(host)
+
+    try:
+        result = subprocess.run(
+            command,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL
+        )
+
+        return result.returncode == 0
+
+    except Exception:
+        return False
 
 
 # function: format_status(success)
