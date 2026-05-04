@@ -90,12 +90,20 @@ def monitor_host(host, interval, count=None, log=False):
     return success_count, failure_count
 
 
-# function: display_summary(success_count, failure_count)
-#   print:
-#       total checks
-#       successes
-#       failures
-#       uptime percentage
+def display_summary(success_count, failure_count):
+    total = success_count + failure_count
+
+    # avoid division by zero
+    if total == 0:
+        uptime_percent = 0.0
+    else:
+        uptime_percent = (success_count / total) * 100
+
+    print("\n=== Monitoring Summary ===\n")
+    print(f"Total checks: {total}")
+    print(f"Successes: {success_count}")
+    print(f"Failures: {failure_count}")
+    print(f"Uptime: {uptime_percent:.2f}%\n")
 
 # function: parse_arguments()
 #   arguments:
