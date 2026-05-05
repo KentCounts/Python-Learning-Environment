@@ -105,37 +105,104 @@ def display_summary(success_count, failure_count):
     print(f"Failures: {failure_count}")
     print(f"Uptime: {uptime_percent:.2f}%\n")
 
-# function: parse_arguments()
-#   arguments:
-#       host (default: google.com)
-#       interval (seconds)
-#       count (optional number of pings)
-#       --log (optional logging flag)
+def parse_arguments():
+    parser = argparse.ArgumentParser(
+        description="Monitor network uptime by pinging a host."
+    )
+
+    parser.add_argument(
+        "host",
+        nargs="?",
+        default=DEFAULT_HOST,
+        help=f"Host to monitor (default: {DEFAULT_HOST})"
+    )
+
+    parser.add_argument(
+        "--interval",
+        type=float,
+        default=DEFAULT_INTERVAL,
+        help=f"Seconds between pings (default: {DEFAULT_INTERVAL})"
+    )
+
+    parser.add_argument(
+        "--count",
+        type=int,
+        default=DEFAULT_COUNT,
+        help="Number of pings to send (default: infinite)"
+    )
+
+    parser.add_argument(
+        "--log",
+        action="store_true",
+        help="Log results to file"
+    )
+
+    return parser.parse_args()
 
 
-# function: run(host, interval, count=None, log=False)
-#   validate inputs
-#   call monitor_host
-#   display summary
+def run(host, interval, count=None, log=False):
+    # basic validation
+    if interval <= 0:
+        print("Error: Interval must be greater than 0.")
+        return
+
+    if count is not None and count <= 0:
+        print("Error: Count must be greater than 0.")
+        return
+
+    print(f"Starting monitor for: {host}")
+    print(f"Interval: {interval} seconds")
+    print(f"Count: {'infinite' if count is None else count}")
+    print(f"Logging: {'enabled' if log else 'disabled'}")
+
+    success_count, failure_count = monitor_host(
+        host, interval, count=count, log=log
+    )
+
+    display_summary(success_count, failure_count)
 
 
-# function: run_interactive()
-#   prompt user for:
-#       host
-#       interval
-#       count (optional)
-#       logging preference
-#   apply defaults if blank
-#   call run()
+def run_interactive():
+    print("Network Monitor")
+
+    host = input(f"Enter host (default: {DEFAULT_HOST}): ").strip()
+    interval = input(f"Enter interval in seconds (default: {DEFAULT_INTERVAL}): ").strip()
+    count = input("Enter number of pings (leave blank for infinite): ").strip()
+    log_choice = input("Enable logging? (y/n): ").strip().lower()
+
+    # apply defaults
+    if not host:
+        host = DEFAULT_HOST
+
+    if not interval:
+        interval = DEFAULT_INTERVAL
+    else:
+        try:
+            interval = float(interval)
+        except ValueError:
+            print("Invalid interval. Using default.")
+            interval = DEFAULT_INTERVAL
+
+    if not count:
+        count = None
+    else:
+        try:
+            count = int(count)
+        except ValueError:
+            print("Invalid count. Using infinite.")
+            count = None
+
+    log = log_choice == "y"
+
+    run(host, interval, count, log)
 
 
-# function: main()
-#   parse CLI arguments
-#   call run()
+def main():
+    args = parse_arguments()
+    run(args.host, args.interval, args.count, args.log)
 
-
-# if __name__ == "__main__":
-#   main()
+if __name__ == "__main__":
+    main()
 
 # FUTURE IMPROVEMENTS
 # multiple host monitoring
