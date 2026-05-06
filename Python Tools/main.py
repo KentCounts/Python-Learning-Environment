@@ -5,15 +5,18 @@ import file_organizer
 import batch_renamer
 import system_info
 import log_parser
+import network_monitor
+
 
 def main():
     while True:
-        print("\nAutomation Tools")
+        print("\n=== Python Automation Suite ===")
         print("1. File Organizer")
         print("2. Batch Renamer")
         print("3. System Info")
         print("4. Log Parser")
-        print("")
+        print("5. Network Monitor")
+        print("6. Exit")
 
         choice = input("Select an option: ").strip()
 
@@ -27,9 +30,12 @@ def main():
             system_info.run_interactive()
 
         elif choice == "4":
-             log_parser.run_interactive()
+            log_parser.run_interactive()
 
         elif choice == "5":
+            network_monitor.run_interactive()
+
+        elif choice == "6":
             print("Exiting.")
             break
 
