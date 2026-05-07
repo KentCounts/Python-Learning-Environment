@@ -40,8 +40,6 @@ DEFAULT_FOLDER = "Other"
 DEFAULT_TARGET_DIRECTORY = os.getcwd()
 LOG_FILE = "organizer_log.txt"
 
-# function: get_files_in_directory(path)
-#   return list of files (exclude folders)
 def get_files_in_directory(path):
     files = []
 
@@ -55,21 +53,14 @@ def get_files_in_directory(path):
 
     return files
 
-# function: get_file_extension(filename)
-#   extract and return extension (lowercase)
+
 def get_file_extension(filename):
     _, ext = os.path.splitext(filename)
     return ext.lower()
 
-# function: get_destination_folder(extension)
-#   return folder name based on mapping
-#   if extension not found → return "Other"
 def get_destination_folder(extension):
     return EXTENSION_MAP.get(extension, DEFAULT_FOLDER)
 
-# function: create_folder_if_not_exists(base_path, folder_name)
-#   check if folder exists
-#   if not → create it
 def create_folder_if_not_exists(base_path, folder_name):
     folder_path = os.path.join(base_path, folder_name)
 
@@ -82,26 +73,17 @@ def log_action(message):
     with open(LOG_FILE, "a") as log_file:
         log_file.write(message + "\n")
 
-# function: move_file(file_path, destination_folder)
-#   construct destination path
-#   move file using shutil
+
 def move_file(file_path, destination_folder):
     filename = os.path.basename(file_path)
     destination_path = os.path.join(destination_folder, filename)
 
     shutil.move(file_path, destination_path)
 
-    log_message = f"Moved: {file_path} → {destination_path}"
+    log_message = f"Moved: {file_path} -> {destination_path}"
     print(log_message)
     log_action(log_message)
 
-# function: organize_directory(target_path)
-#   get all files in directory
-#   loop through each file:
-#       get extension
-#       determine destination folder
-#       ensure folder exists
-#       move file
 def organize_directory(target_path):
     files = get_files_in_directory(target_path)
 
@@ -121,10 +103,7 @@ def organize_directory(target_path):
         move_file(file_path, destination_folder)
 
 
-# function: parse_arguments()
-#   define command line arguments
-#   example:
-#       path to organize
+
 def parse_arguments():
     parser = argparse.ArgumentParser(
         description="Organize files in a directory by type."
@@ -139,7 +118,6 @@ def parse_arguments():
 
     return parser.parse_args()
 
-# run with manual input and not argparsing
 def run(target_path):
     # validate path
     if not os.path.exists(target_path):

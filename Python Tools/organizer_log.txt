@@ -1,0 +1,3 @@
+Moved: C:\file organizer\armoria_2026-05-05-14-32-46.png -> C:\file organizer\Images\armoria_2026-05-05-14-32-46.png
+Moved: C:\file organizer\code.py -> C:\file organizer\Code\code.py
+Moved: C:\file organizer\test.txt -> C:\file organizer\Documents\test.txt

@@ -51,7 +51,7 @@ def rename_file(old_path, directory, new_name):
     os.rename(old_path, new_path)
 
     # log + print
-    log_message = f"Renamed: {os.path.basename(old_path)} → {new_name}"
+    log_message = f"Renamed: {os.path.basename(old_path)} -> {new_name}"
     print(log_message)
     log_action(log_message)
 
